@@ -200,16 +200,20 @@
                 return;
             }
 
-            // 這裡可以加入實際的預約檢查邏輯
-            // 目前模擬所有時段都可預約
-            const isAvailable = true;
-
-            if (isAvailable) {
-                // 將查詢參數傳遞到預約表單頁面
-                window.location.href = `booking.html?service=${encodeURIComponent(phone)}&start_date=${startDate}&start_hour=${startHour}&end_date=${endDate}&end_hour=${endHour}`;
-            } else {
-                alert('抱歉，該時段已被預約，請選擇其他時段。');
-            }
+            fetch(`https://script.google.com/macros/s/AKfycbzZwXgqYOB_m2xmXabc6DTiNJbe_przidXt98p-9Vxsbu_pf_YGdyOGF0Vb0-O6S8WM/exec?product=${encodeURIComponent(phone)}&date=${startDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.available) {
+                        // 可預約
+                        window.location.href = `booking.html?service=${encodeURIComponent(phone)}&start_date=${startDate}&start_hour=${startHour}&end_date=${endDate}&end_hour=${endHour}`;
+                    } else {
+                        alert(`抱歉，該商品已無可用數量。剩餘：${data.remaining !== null ? data.remaining : 0} 台`);
+                    }
+                })
+                .catch(error => {
+                    alert('查詢失敗，請稍後再試。');
+                    console.error(error);
+                });
         }
     </script>
 </body>

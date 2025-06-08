@@ -127,10 +127,26 @@
                 notes: document.getElementById('notes').value
             };
 
-            // 這裡可以加入實際的預約提交邏輯
-            console.log('預約資料：', bookingData);
-            alert('預約成功！我們會盡快與您聯繫確認。');
-            window.location.href = 'index.html';
+            fetch('https://script.google.com/macros/s/AKfycbzZwXgqYOB_m2xmXabc6DTiNJbe_przidXt98p-9Vxsbu_pf_YGdyOGF0Vb0-O6S8WM/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('預約成功！');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('預約失敗，請重試');
+                }
+            })
+            .catch(error => {
+                alert('網路錯誤，請稍後再試');
+                console.error(error);
+            });
         }
 
         // 頁面載入時顯示預約資訊
