@@ -130,9 +130,19 @@
             fetch('https://script.google.com/macros/s/AKfycbzZwXgqYOB_m2xmXabc6DTiNJbe_przidXt98p-9Vxsbu_pf_YGdyOGF0Vb0-O6S8WM/exec', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: JSON.stringify(bookingData)
+                body: new URLSearchParams({
+                    service: bookingData.service,
+                    start_date: bookingData.start_date,
+                    start_hour: bookingData.start_hour,
+                    end_date: bookingData.end_date,
+                    end_hour: bookingData.end_hour,
+                    name: bookingData.name,
+                    phone: bookingData.phone,
+                    email: bookingData.email,
+                    notes: bookingData.notes
+                })
             })
             .then(response => response.json())
             .then(data => {
