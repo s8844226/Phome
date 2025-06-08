@@ -133,7 +133,7 @@
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    service: bookingData.service,
+                    product: bookingData.service,
                     start_date: bookingData.start_date,
                     start_hour: bookingData.start_hour,
                     end_date: bookingData.end_date,
@@ -150,7 +150,7 @@
                     alert('預約成功！');
                     window.location.href = 'index.html';
                 } else {
-                    alert('預約失敗，請重試');
+                    alert(data.message || '預約失敗，請重試');
                 }
             })
             .catch(error => {
