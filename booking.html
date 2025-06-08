@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>預約表單</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .booking-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>預約表單</h1>
+        <div class="booking-info" id="bookingInfo">
+            <!-- 預約資訊將在這裡顯示 -->
+        </div>
+        <form id="bookingForm" onsubmit="return submitBooking(event)">
+            <div class="form-group">
+                <label for="name">姓名：</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">電話：</label>
+                <input type="tel" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">電子郵件：</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="notes">備註：</label>
+                <textarea id="notes" rows="4"></textarea>
+            </div>
+            <button type="submit">確認預約</button>
+        </form>
+    </div>
+
+    <script>
+        // 從 URL 獲取預約資訊
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                service: params.get('service'),
+                start_date: params.get('start_date'),
+                start_hour: params.get('start_hour'),
+                end_date: params.get('end_date'),
+                end_hour: params.get('end_hour')
+            };
+        }
+
+        // 顯示預約資訊
+        function displayBookingInfo() {
+            const params = getUrlParams();
+            const bookingInfo = document.getElementById('bookingInfo');
+            bookingInfo.innerHTML = `
+                <h3>預約資訊</h3>
+                <p>手機型號：${params.service}</p>
+                <p>租借日期時間：${params.start_date ? params.start_date : ''} ${params.start_hour ? params.start_hour.padStart(2, '0') + ':00' : ''}</p>
+                <p>歸還日期時間：${params.end_date ? params.end_date : ''} ${params.end_hour ? params.end_hour.padStart(2, '0') + ':00' : ''}</p>
+            `;
+        }
+
+        // 提交預約表單
+        function submitBooking(event) {
+            event.preventDefault();
+            
+            const params = getUrlParams();
+            const bookingData = {
+                service: params.service,
+                start_date: params.start_date,
+                start_hour: params.start_hour,
+                end_date: params.end_date,
+                end_hour: params.end_hour,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                notes: document.getElementById('notes').value
+            };
+
+            // 這裡可以加入實際的預約提交邏輯
+            console.log('預約資料：', bookingData);
+            alert('預約成功！我們會盡快與您聯繫確認。');
+            window.location.href = 'index.html';
+        }
+
+        // 頁面載入時顯示預約資訊
+        window.onload = displayBookingInfo;
+    </script>
+</body>
+</html> 
